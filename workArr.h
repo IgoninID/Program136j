@@ -26,12 +26,12 @@ void fill_arr_rand(double* array, size_t size);
 void fill_arr_rand(vector<double> &array);
 
 ///Функция вывода массива
-///double* array - указатель на массив, size_t size - размер массива
-void print_arr(double* array, size_t size);
+///double* array - указатель на массив, size_t size - размер массива, noexcept - нет исключительных ситуаций
+void print_arr(double* array, size_t size) noexcept;
 
 ///Функция вывода массива
-///const vector<double> &array - ссылка на динамический массив типа вектор, const для того, чтобы случайно не изменить массив
-void print_arr(const vector<double> &array);
+///const vector<double> &array - ссылка на динамический массив типа вектор, const для того, чтобы случайно не изменить массив, noexcept - нет исключительных ситуаций
+void print_arr(const vector<double> &array) noexcept;
 
 ///Функция вычисления по формуле a1-a2+a3-...+(-1)^(n+1)an
 ///double* array - указатель на массив, size_t size - размер массива

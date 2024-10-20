@@ -25,6 +25,7 @@ int main()
     //system-функция, выполняющая заданную, через параметр syscom, системную команду
     //chcp 65001 > nul установливает кодировку юникод UTF8, chcp - изменить кодовую страницу
     system("chcp 65001 > nul");
+    void test(); //вызов функции проверки достоверности самостоятельно написанных функции
 
     int VectorOrDinamicArr = 10;
     cout << "Вектор или Динамический массив(Введите 1 или 0): " << "1 - Вектор, " << "0 - Динамический массив\n"; //вывод подсказки
@@ -36,7 +37,6 @@ int main()
     if (VectorOrDinamicArr == 1)
     {
     vector<double> arr;
-    void test(); //вызов функции проверки достоверности самостоятельно написанных функции
     size_t n = 0; //инициализация переменной, отвечающей за размер массива
     int LoadFileOrNot = 10;
     cout << "Загрузка массива или нет(Введите 1 или 0): " << "1 - Загрузка массива из файла, " << "0 - Нет\n"; //вывод подсказки
@@ -47,13 +47,22 @@ int main()
 
     if (LoadFileOrNot == 1)
     {
-        char lFile[255];
+        double ans = 0; // переменная для ответа
+        char lFile[255]; //название файла для загрузки
         cout << "Введите название файла с массивом: ";
         cin >> lFile;
-        arr.resize(n);
-        arr = LoadArrayFromFile(lFile, arr, n);
+        arr.resize(n); //инициализируем массив
+        try // обработка исключительных ситуаций
+        {
+            arr = LoadArrayFromFile(lFile, arr, n); // загрузка массива из файла
+            ans = calc_answ(arr); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
+        }
+        catch (const char* error_message) // если произошла ошибка
+        {
+            cout << error_message; // вывод сообщения
+            return 1; // завершение работы программы
+        }
         print_arr(arr); // вывод массива
-        double ans = calc_answ(arr); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
         cout << "Вычисление по формуле: a1-a2+a3-...+(-1)^(n+1)an = "; // вывод подсказки
         cout << ans; // вывод ответа
         arr.clear(); // освобождение памяти, занятой массивом
@@ -67,6 +76,7 @@ int main()
         {
             cin >> n; // ввод пользователем размера массива
         } while (n == 0); // проверка введенного выбора
+        double ans = 0; // переменная для ответа
         char sFile[255];
         cout << "Введите название файла для сохранения массива: ";
         cin >> sFile;
@@ -80,7 +90,15 @@ int main()
 
         if (SelforRand == 1) // если пользователь ввел 1
         {
-            fill_arr(arr); // вызов функции заполнения массива от руки
+            try
+            {
+                fill_arr(arr); // вызов функции заполнения массива от руки
+            }
+            catch(const char* error_message)
+            {
+                cout << error_message;
+                return 1;
+            }
         }
 
         if (SelforRand == 0) // если пользователь ввел 1
@@ -88,11 +106,27 @@ int main()
             //функция time возвращает текущее время в секундах
             //Функция srand выполняет инициализацию генератора случайных чисел rand
             srand(time(nullptr));
-            fill_arr_rand(arr); // вызов функции заполнения массива случайными числами
+            try
+            {
+                fill_arr_rand(arr); // вызов функции заполнения массива случайными числами
+            }
+            catch(const char* error_message)
+            {
+                cout << error_message;
+                return 1;
+            }
         }
         print_arr(arr); // вывод массива
-        SaveArrayToFile(sFile, arr);
-        double ans = calc_answ(arr); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
+        try
+        {
+            SaveArrayToFile(sFile, arr);
+            ans = calc_answ(arr); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
+        }
+        catch(const char* error_message)
+        {
+            cout << error_message;
+            return 1;
+        }
         cout << "Вычисление по формуле: a1-a2+a3-...+(-1)^(n+1)an = "; // вывод подсказки
         cout << ans; // вывод ответа
         arr.clear(); // освобождение памяти, занятой массивом
@@ -102,7 +136,7 @@ int main()
 
     if (VectorOrDinamicArr == 0)
     {
-    void test(); //вызов функции проверки достоверности самостоятельно написанных функции
+    double ans = 0; // переменная для ответа
     size_t n = 0; //инициализация переменной, отвечающей за размер массива
     int LoadFileOrNot = 10;
     cout << "Загрузка массива или нет(Введите 1 или 0): " << "1 - Загрузка массива из файла, " << "0 - Нет\n"; //вывод подсказки
@@ -112,12 +146,21 @@ int main()
     } while ((LoadFileOrNot != 1)&&(LoadFileOrNot != 0)); // проверка введенного метода
     if (LoadFileOrNot == 1)
     {
-        char lFile[255];
+        char lFile[255]; // название файла для загрузки
+        double* arr; // массив
         cout << "Введите название файла с массивом: ";
         cin >> lFile;
-        double* arr = LoadArrayFromFile(lFile, n);
+        try
+        {
+            arr = LoadArrayFromFile(lFile, n); // загрузка массива из файла
+            ans = calc_answ(arr, n); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
+        }
+        catch(const char* error_message)
+        {
+            cout << error_message;
+            return 1;
+        }
         print_arr(arr, n); // вывод массива
-        double ans = calc_answ(arr, n); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
         cout << "Вычисление по формуле: a1-a2+a3-...+(-1)^(n+1)an = "; // вывод подсказки
         cout << ans; // вывод ответа
         delete[] arr; // освобождение памяти, занятой массивом
@@ -130,7 +173,8 @@ int main()
         {
             cin >> n; // ввод пользователем размера массива
         } while (n == 0); // проверка введенного выбора
-        char sFile[255];
+        double ans = 0; // переменная для ответа
+        char sFile[255]; // название файла для сохранения
         cout << "Введите название файла для сохранения массива: ";
         cin >> sFile;
         double* arr = new double [n]; // инициализация динамического массива, размером n
@@ -143,18 +187,42 @@ int main()
 
         if (SelforRand == 1) // если пользователь ввел 1
         {
-        fill_arr(arr, n); // вызов функции заполнения массива от руки
+            try
+            {
+                fill_arr(arr, n); // вызов функции заполнения массива от руки
+            }
+            catch(const char* error_message)
+            {
+                cout << error_message;
+                return 1;
+            }
         }
         if (SelforRand == 0) // если пользователь ввел 1
         {
             //функция time возвращает текущее время в секундах
             //Функция srand выполняет инициализацию генератора случайных чисел rand
             srand(time(nullptr));
-            fill_arr_rand(arr, n); // вызов функции заполнения массива случайными числами
+            try
+            {
+                fill_arr_rand(arr, n); // вызов функции заполнения массива случайными числами
+            }
+            catch(const char* error_message)
+            {
+                cout << error_message;
+                return 1;
+            }
         }
         print_arr(arr, n); // вывод массива
-        SaveArrayToFile(sFile, arr, n);
-        double ans = calc_answ(arr, n); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
+        try
+        {
+            SaveArrayToFile(sFile, arr, n);
+            ans = calc_answ(arr, n); // вычисление по формуле a1-a2+a3-...+(-1)^(n+1)an
+        }
+        catch(const char* error_message)
+        {
+            cout << error_message;
+            return 1;
+        }
         cout << "Вычисление по формуле: a1-a2+a3-...+(-1)^(n+1)an = "; // вывод подсказки
         cout << ans; // вывод ответа
         delete[] arr; // освобождение памяти, занятой массивом

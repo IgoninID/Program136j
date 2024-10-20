@@ -23,47 +23,63 @@ namespace WorkArray
 ///double* array - указатель на массив, size_t size - размер массива
 void fill_arr(double* array, size_t size)
 {
+    if (size!=0) // если размер массива не равен нулю
+    {
     cout << "Заполнение массива: ";
     for (size_t i = 0; i < size; i++) // пробегаем по всему массиву
     {
         cin >> array[i]; // ввод элемента массива
     }
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch
 }
 
 ///Функция заполнения массива от руки
 ///vector<double> &array - ссылка на динамический массив типа вектор
 void fill_arr(vector<double> &array)
 {
+    if (array.size()!=0) // если размер массива не равен нулю
+    {
     cout << "Заполнение массива: ";
     for (size_t i = 0; i < array.size(); i++) // пробегаем по всему массиву
     {
         cin >> array[i]; // ввод элемента массива
     }
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch
 }
 
 ///Функция заполнения массива рандомно от -25 до 25
 ///double* array - указатель на массив, size_t size - размер массива
 void fill_arr_rand(double* array, size_t size)
 {
+    if (size!=0) // если размер массива не равен нулю
+    {
     for (size_t i = 0; i < size; i++) // пробегаем по всему массиву
     {
         array[i] = (rand()%50-25); // рандомно задаем элементы массива в диапазоне от -25 до 25(функция rand отвечает за подбор случайных чисел)
-    }    
+    }
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch    
 }
 
 ///Функция заполнения массива рандомно от -25 до 25
 ///vector<double> &array - ссылка на динамический массив типа вектор
 void fill_arr_rand(vector<double> &array)
 {
+    if (array.size()!=0) // если размер массива не равен нулю
+    {
     for (size_t i = 0; i < array.size(); i++) // пробегаем по всему массиву
     {
         array[i] = (rand()%50-25); // рандомно задаем элементы массива в диапазоне от -25 до 25(функция rand отвечает за подбор случайных чисел)
-    }    
+    }
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch    
 }
 
 ///Функция вывода массива
-///double* array - указатель на массив, size_t n - размер массива
-void print_arr(double* array, size_t size)
+///double* array - указатель на массив, size_t n - размер массива, noexcept - не исключительных ситуаций
+void print_arr(double* array, size_t size) noexcept
 {
     cout << "Массив: "; // вывод в консоль
     for (size_t i = 0; i < size; i++) // пробегаем по всему массиву
@@ -74,8 +90,8 @@ void print_arr(double* array, size_t size)
 }
 
 ///Функция вывода массива
-///const vector<double> &array - ссылка на динамический массив типа вектор, const для того, чтобы случайно не изменить массив
-void print_arr(const vector<double> &array)
+///const vector<double> &array - ссылка на динамический массив типа вектор, const для того, чтобы случайно не изменить массив, noexcept - не исключительных ситуаций
+void print_arr(const vector<double> &array) noexcept
 {
     cout << "Массив: "; // вывод в консоль
     for (size_t i = 0; i < array.size(); i++) // пробегаем по всему массиву
@@ -89,6 +105,8 @@ void print_arr(const vector<double> &array)
 ///double* array - указатель на массив, size_t size - размер массива
 double calc_answ(double* array, size_t size)
 {
+    if (size!=0) // если размер массива не равен нулю
+    {
     double minus = -1; // переменная для смены знака
     double rez = array[0]; // первый элемент
     for (size_t i = 1; i < size; i++) // пробегаем по массиву не включая первый элемент
@@ -96,13 +114,17 @@ double calc_answ(double* array, size_t size)
         minus = -minus; // смена знака
         rez -= minus*array[i]; // рассчет по формуле a1-a2+a3-...+(-1)^(n+1)an
     }
-    return rez; // возвращает результат вычислений   
+    return rez; // возвращает результат вычислений  
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch 
 }
 
 ///Функция вычисления по формуле a1-a2+a3-...+(-1)^(n+1)an
 ///const vector<double> &array - ссылка на динамический массив типа вектор, const для того, чтобы случайно не изменить массив
 double calc_answ(const vector<double> &array)
 {
+    if (array.size()!=0) // если размер массива не равен нулю
+    {
     double minus = -1; // переменная для смены знака
     double rez = array[0]; // первый элемент
     for (size_t i = 1; i < array.size(); i++) // пробегаем по массиву не включая первый элемент
@@ -110,7 +132,9 @@ double calc_answ(const vector<double> &array)
         minus = -minus; // смена знака
         rez -= minus*array[i]; // рассчет по формуле a1-a2+a3-...+(-1)^(n+1)an
     }
-    return rez; // возвращает результат вычислений   
+    return rez; // возвращает результат вычислений
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch   
 }
 
 ///Функция сохранения массива в файл
@@ -120,14 +144,17 @@ void SaveArrayToFile(const char *filename, double *array, size_t size)
     ofstream SaveFile(filename); // открываем или создаем файл с переданным названием для записи
     if (!SaveFile) // если файл не открылся
     {
-        cout << "Не удается открыть файл для записи: " << filename << "\n"; // выводим сообщение
-        return; // функция завершает работу
+        throw "Не удается открыть файл для записи"; // отправление сообщения в catch 
     }
+    if (size!=0) // если размер массива не равен нулю
+    {
     for (size_t i = 0; i < size; i++) // пробегаем по всему массиву
     {
         SaveFile << array[i] << " "; // записываем элементы в файл
     }
     SaveFile.close(); // закрываем файл
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch 
 }
 
 ///Функция сохранения массива в файл
@@ -137,14 +164,17 @@ void SaveArrayToFile(const char *filename, const vector<double> &array)
     ofstream SaveFile(filename); // открываем или создаем файл с переданным названием для записи
     if (!SaveFile) // если файл не открылся
     {
-        cout << "Не удается открыть файл для записи: " << filename << "\n"; // выводим сообщение
-        return; // функция завершает работу
+        throw "Не удается открыть файл для записи"; // отправление сообщения в catch 
     }
+    if (array.size()!=0) // если размер массива не равен нулю
+    {
     for (size_t i = 0; i < array.size(); i++) // пробегаем по всему массиву
     {
         SaveFile << array[i] << " "; // записываем элементы в файл
     }
     SaveFile.close(); // закрываем файл
+    }
+    else throw "Нулевой размер массива"; // отправление сообщения в catch 
 }
 
 ///Функция загрузки массива из файла
@@ -155,13 +185,16 @@ double *LoadArrayFromFile(const char *filename, size_t &size)
     ifstream inFile(filename); // открываем файл с переданным названием для чтения
     if (!inFile) // если файл не открылся
     {
-        cout << "Не удается открыть файл для записи: " << filename << "\n"; // выводим сообщение
-        return nullptr; // функция завершает работу
+        throw "Не удается открыть файл для чтения"; // отправление сообщения в catch 
     }
     double temp; // буферная переменная для размера массива из файла
     while (inFile >> temp) // подсчет количества чисел в файле
     {
         size++; // увеличиваем размер массива
+    }
+    if (size==0) // если размер массива равен 0
+    {
+        throw "Нулевой размер массива(из файла)"; // отправление сообщения в catch 
     }
     inFile.clear(); // сброс состояния потока
     inFile.seekg(0); // перемещение указателя на начало файла
@@ -183,13 +216,16 @@ vector<double> LoadArrayFromFile(const char *filename, const vector<double> arra
     ifstream inFile(filename); // открываем файл с переданным названием для чтения
     if (!inFile) // если файл не открылся
     {
-        cout << "Не удается открыть файл для записи: " << filename << "\n"; // выводим сообщение
-        return tempArray; // функция возвращает пустой массив
+        throw "Не удается открыть файл для чтения"; // отправление сообщения в catch 
     }
     double temp; // буферная переменная для размера массива из файла
     while (inFile >> temp) // подсчет количества чисел в файле
     {
         size++; // увеличиваем размер массива
+    }
+    if (size==0) // если размер массива равен 0
+    {
+        throw "Нулевой размер массива(из файла)"; // отправление сообщения в catch 
     }
     inFile.clear(); // сброс состояния потока
     inFile.seekg(0); // перемещение указателя на начало файла
